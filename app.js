@@ -7,7 +7,7 @@ let DOM = {
 };
 let budgetController = (function () {
 
-});
+})();
 
 let UIController = (function () {
     return {
@@ -19,7 +19,7 @@ let UIController = (function () {
             }
         }
     }
-});
+})();
 
 let controller = (function (budgetCtrl, UICtrl) {
 

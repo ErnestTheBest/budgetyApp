@@ -1,11 +1,14 @@
 let DOM = {
     inputBtn: '.add__btn',
     budgetValue: '.budget__value',
+    budgetIncomeValue: '.budget__income--value',
+    budgetExpenseValue: '.budget__expenses--value',
+    budgetExpensePercentage: '.budget__expenses--percentage',
     inputType: '.add__type',
     inputDescription: '.add__description',
     inputValue: '.add__value',
     incomeContainer: '.income__list',
-    expenseContainer: '.expenses__list'
+    expenseContainer: '.expenses__list',
 };
 
 let budgetController = (function () {
@@ -136,6 +139,18 @@ let UIController = (function () {
             document.querySelectorAll(`${DOM.inputDescription}, ${DOM.inputValue}`)
                 .forEach(e => e.value = "");
             document.querySelector(DOM.inputDescription).focus();
+        },
+
+        displayBudget: function (budget) {
+            document.querySelector(DOM.budgetValue).textContent = budget.budget;
+            document.querySelector(DOM.budgetIncomeValue).textContent = budget.income;
+            document.querySelector(DOM.budgetExpenseValue).textContent = budget.expense;
+
+            if (budget.percentage > 0) {
+                document.querySelector(DOM.budgetExpensePercentage).textContent = budget.percentage + '%';
+            } else {
+                document.querySelector(DOM.budgetExpensePercentage).textContent = '---';
+            }
         }
     }
 })();
@@ -161,6 +176,7 @@ let controller = (function (budgetCtrl, UICtrl) {
         let budget = budgetCtrl.getBudget();
 
         // 3. Display the budget on the UI
+        UICtrl.displayBudget(budget);
     };
 
     let ctrlAddItem = function () {
@@ -168,6 +184,8 @@ let controller = (function (budgetCtrl, UICtrl) {
 
         // 1. Get input
         input = UICtrl.getInput();
+
+        // If input is not empty
         if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
 
             // 2. Add item to budget controller
@@ -187,6 +205,7 @@ let controller = (function (budgetCtrl, UICtrl) {
     return {
         init: function () {
             setupEventListeners();
+            UICtrl.displayBudget(budgetCtrl.getBudget());
             console.log('App starter.');
         }
     }

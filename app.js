@@ -99,6 +99,12 @@ let UIController = (function () {
 
             // Insert HTML into DOM
             element.insertAdjacentHTML('beforebegin', html)
+        },
+        
+        clearInput: function () {
+            document.querySelectorAll(`${DOM.inputDescription}, ${DOM.inputValue}`)
+                .forEach(e => e.value = "");
+            document.querySelector(DOM.inputDescription).focus();
         }
     }
 })();
@@ -129,6 +135,7 @@ let controller = (function (budgetCtrl, UICtrl) {
 
         // 3. Add item to UI
         UICtrl.addListItem(newItem);
+        UICtrl.clearInput();
 
         // 4. Calculate the budget
 

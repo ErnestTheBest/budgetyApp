@@ -9,6 +9,7 @@ let DOM = {
     inputValue: '.add__value',
     incomeContainer: '.income__list',
     expenseContainer: '.expenses__list',
+    container: '.container'
 };
 
 let budgetController = (function () {
@@ -65,6 +66,17 @@ let budgetController = (function () {
 
             data.allItems[type].push(newItem);
             return newItem;
+        },
+
+        deleteItem: function (type, id) {
+            console.log(type, id);
+            let itemID;
+            itemID = data.allItems[type].findIndex(e => e.id === id);
+            console.log(itemID);
+            console.log(itemID);
+            if (itemID !== -1) {
+                data.allItems[type].splice(itemID, 1);
+            }
         },
 
         calculateBudget: function () {
@@ -165,7 +177,9 @@ let controller = (function (budgetCtrl, UICtrl) {
             if (event.keyCode === 13) {
                 ctrlAddItem();
             }
-        })
+        });
+
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem)
     };
 
     let updateBudget = function () {
@@ -199,6 +213,26 @@ let controller = (function (budgetCtrl, UICtrl) {
 
             // 5. Calculate and update budget
             updateBudget();
+        }
+    };
+
+    let ctrlDeleteItem = function (event) {
+        let itemID, splitID, type, ID;
+        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        if (itemID) {
+            splitID = itemID.split('-');
+            type = splitID[0];
+            ID = splitID[1];
+
+            // 1. Remove item from DB
+            budgetCtrl.deleteItem(type, ID);
+
+            // 2. Delete the item from UI
+
+            // 3. Update and show new budget
+
+            console.log(splitID);
         }
     };
 
